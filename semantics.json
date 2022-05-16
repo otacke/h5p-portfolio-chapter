@@ -1,0 +1,30 @@
+[
+  {
+    "name": "contents",
+    "type": "list",
+    "label": "Contents",
+    "entity": "content",
+    "min": 1,
+    "field": {
+      "name": "content",
+      "type": "group",
+      "label": "Content",
+      "fields": [
+        {
+          "name": "content",
+          "type": "library",
+          "label": "Content",
+          "options": [
+            "H5P.GroupOfThree 0.1"
+          ]
+        },
+        {
+          "name": "dummy",
+          "type": "boolean",
+          "label": "Dummy",
+          "widget": "none"
+        }
+      ]
+    }
+  }
+]
