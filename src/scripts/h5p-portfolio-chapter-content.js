@@ -369,10 +369,18 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
 
   /**
    * Get instances.
-   * @return {H5P.ContentType[]} H5P Instances.
+   * @return {H5P.ContentType[]} H5P instances.
    */
   getInstances() {
     return this.contents.map(content => content.instance);
+  }
+
+  /**
+   * Get instances' semantics.
+   * @return {object[]} H5P instance semantics.
+   */
+  getInstancesSemantics() {
+    return this.params.contents.map(content => content.content);
   }
 
   /**
