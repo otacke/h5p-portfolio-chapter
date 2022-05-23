@@ -1,7 +1,7 @@
-import Util from './h5p-portfolio-chapter-content-util';
-import '../styles/h5p-portfolio-chapter-content.scss';
+import Util from './h5p-portfolio-chapter-util';
+import '../styles/h5p-portfolio-chapter.scss';
 
-export default class PortfolioChapterContent extends H5P.EventDispatcher {
+export default class PortfolioChapter extends H5P.EventDispatcher {
   /**
    * @constructor
    * @param {object} params Parameters passed by the editor.
@@ -50,7 +50,7 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
    * @param {jQuery} $wrapper Content's container.
    */
   attach($wrapper) {
-    $wrapper.get(0).classList.add('h5p-portfolio-chapter-content');
+    $wrapper.get(0).classList.add('h5p-portfolio-chapter');
     $wrapper.get(0).appendChild(this.buildDOM());
 
     // Make sure DOM has been rendered with content
@@ -114,7 +114,7 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
    */
   buildDOM() {
     const contents = document.createElement('div');
-    contents.classList.add('h5p-portfolio-chapter-content-contents');
+    contents.classList.add('h5p-portfolio-chapter-contents');
 
     this.contents.forEach(content => {
       contents.appendChild(content.dom);
@@ -129,7 +129,7 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
    */
   buildContentWrapper() {
     const contentWrapper = document.createElement('div');
-    contentWrapper.classList.add('h5p-portfolio-chapter-content-content');
+    contentWrapper.classList.add('h5p-portfolio-chapter-content');
 
     return contentWrapper;
   }
@@ -390,7 +390,7 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
   getTitle() {
     // H5P Core function: createTitle
     return H5P.createTitle(
-      this.extras?.metadata?.title || PortfolioChapterContent.DEFAULT_DESCRIPTION
+      this.extras?.metadata?.title || PortfolioChapter.DEFAULT_DESCRIPTION
     );
   }
 
@@ -399,7 +399,7 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
    * @return {string} Description.
    */
   getDescription() {
-    return PortfolioChapterContent.DEFAULT_DESCRIPTION;
+    return PortfolioChapter.DEFAULT_DESCRIPTION;
   }
 
   /**
@@ -418,4 +418,4 @@ export default class PortfolioChapterContent extends H5P.EventDispatcher {
 }
 
 /** @constant {string} */
-PortfolioChapterContent.DEFAULT_DESCRIPTION = 'Portfolio chapter';
+PortfolioChapter.DEFAULT_DESCRIPTION = 'Portfolio chapter';

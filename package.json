@@ -1,5 +1,5 @@
 {
-  "name": "h5p-portfolio-chapter-content",
+  "name": "h5p-portfolio-chapter",
   "version": "0.1.0",
   "description": "Chapter content for RUB Portfolio",
   "private": true,
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/otacke/h5p-portfolio-chapter-content.git"
+    "url": "git+https://github.com/otacke/h5p-portfolio-chapter.git"
   },
   "keywords": [
     "h5p",
