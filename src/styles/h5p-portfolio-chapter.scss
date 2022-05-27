@@ -1,13 +1,11 @@
 .h5p-portfolio-chapter {
   width: 100%;
 
-  .h5p-portfolio-chapter-content-row {
-    display: flex;
-    flex-direction: column;
-    margin: 1em;
+  .h5p-portfolio-chapter-content {
+    width: 100%;
 
-    .h5p-portfolio-chapter-content {
-      width: 100%;
+    &:not(:last-child) {
+      margin-bottom: 2em;
     }
   }
 }
