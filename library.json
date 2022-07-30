@@ -2,7 +2,7 @@
   "title": "Portfolio Chapter",
   "description": "RUB Portfolio chapter",
   "majorVersion": 0,
-  "minorVersion": 2,
+  "minorVersion": 3,
   "patchVersion": 0,
   "runnable": 0,
   "author": "RUB, Oliver Tacke",
@@ -19,6 +19,13 @@
   "preloadedCss": [
     {
       "path": "dist/h5p-portfolio-chapter.css"
+    }
+  ],
+  "editorDependencies": [
+    {
+      "machineName": "H5PEditor.PortfolioChapter",
+      "majorVersion": 0,
+      "minorVersion": 1
     }
   ]
 }
