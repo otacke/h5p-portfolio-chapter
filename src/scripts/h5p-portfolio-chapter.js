@@ -13,8 +13,12 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
     // Sanitize parameters
     this.params = Util.extend({
-      contents: []
+      chapter: {
+        contents: []
+      }
     }, params);
+
+    this.params = this.params.chapter;
 
     this.contentId = contentId;
     this.extras = extras;
