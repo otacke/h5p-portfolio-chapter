@@ -3,7 +3,7 @@ import '../styles/h5p-portfolio-chapter.scss';
 
 export default class PortfolioChapter extends H5P.EventDispatcher {
   /**
-   * @constructor
+   * @class
    * @param {object} params Parameters passed by the editor.
    * @param {number} contentId Content's id.
    * @param {object} [extras] Saved state, metadata, etc.
@@ -51,7 +51,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Attach library to wrapper.
-   * @param {jQuery} $wrapper Content's container.
+   *
+   * @param {H5P.jQuery} $wrapper Content's container.
    */
   attach($wrapper) {
     $wrapper.get(0).classList.add('h5p-portfolio-chapter');
@@ -67,10 +68,11 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Build contents including DOM and H5P instances.
+   *
    * @param {object} params Parameters.
    * @param {object[]} params.contents Content parameters.
    * @param {object[]} params.previousStates Previous states.
-   * @return {object[]} Contents including DOM and instance.
+   * @returns {object[]} Contents including DOM and instance.
    */
   buildContents(params = {}) {
     const contents = (params.contents || []).map((content, index) => {
@@ -114,7 +116,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Build DOM.
-   * @return {HTMLElement} Content DOM.
+   *
+   * @returns {HTMLElement} Content DOM.
    */
   buildDOM() {
     const contents = document.createElement('div');
@@ -129,7 +132,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Build content wrapper.
-   * @return {HTMLElement} Content wrapper.
+   *
+   * @returns {HTMLElement} Content wrapper.
    */
   buildContentWrapper() {
     const contentWrapper = document.createElement('div');
@@ -139,7 +143,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   }
 
   /**
-   * Make it easy to bubble events from parent to children
+   * Make it easy to bubble events from parent to children.
+   *
    * @param {object} origin Origin of the event.
    * @param {string} eventName Name of the event.
    * @param {object[]} targets Targets to trigger event on.
@@ -158,6 +163,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Make it easy to bubble events from child to parent.
+   *
    * @param {object} origin Origin of event.
    * @param {string} eventName Name of event.
    * @param {object} target Target to trigger event on.
@@ -178,6 +184,9 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Track scoring of contents.
+   *
+   * @param {Event} event Event.
+   * @param {number} [index=-1] Index.
    */
   trackScoring(event, index = -1) {
     if (!event || event.getScore() === null) {
@@ -206,7 +215,9 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Determine whether an H5P instance is a task.
-   * @return {boolean} True, if instance is a task.
+   *
+   * @param {H5P.ContentType} instance Instance.
+   * @returns {boolean} True, if instance is a task.
    */
   isInstanceTask(instance = {}) {
     if (!instance) {
@@ -228,7 +239,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Check if result has been submitted or input has been given.
-   * @return {boolean} True, if answer was given.
+   *
+   * @returns {boolean} True, if answer was given.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-1}
    */
   getAnswerGiven() {
@@ -242,7 +254,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get score.
-   * @return {number} Score.
+   *
+   * @returns {number} Score.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-2}
    */
   getScore() {
@@ -255,7 +268,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get maximum possible score.
-   * @return {number} Maximum possible score.
+   *
+   * @returns {number} Maximum possible score.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-3}
    */
   getMaxScore() {
@@ -268,6 +282,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Show solutions.
+   *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-4}
    */
   showSolutions() {
@@ -282,6 +297,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Reset task.
+   *
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
    */
   resetTask() {
@@ -298,7 +314,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get xAPI data.
-   * @return {object} XAPI statement.
+   *
+   * @returns {object} XAPI statement.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
    */
   getXAPIData() {
@@ -320,9 +337,10 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   }
 
   /**
-   * Get xAPI data from sub content types
-   * @param {H5P.ContentType[]} H5P instances.
-   * @return {object[]} XAPI data objects used to build report.
+   * Get xAPI data from sub content types.
+   *
+   * @param {H5P.ContentType[]} children instances.
+   * @returns {object[]} XAPI data objects used to build report.
    */
   getXAPIDataFromChildren(children) {
     return children
@@ -336,8 +354,9 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Create an xAPI event.
+   *
    * @param {string} verb Short id of the verb we want to trigger.
-   * @return {H5P.XAPIEvent} Event template.
+   * @returns {H5P.XAPIEvent} Event template.
    */
   createXAPIEvent(verb) {
     const xAPIEvent = this.createXAPIEventTemplate(verb);
@@ -350,7 +369,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get the xAPI definition for the xAPI object.
-   * @return {object} XAPI definition.
+   *
+   * @returns {object} XAPI definition.
    */
   getxAPIDefinition() {
     const definition = {};
@@ -373,7 +393,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get instances.
-   * @return {H5P.ContentType[]} H5P instances.
+   *
+   * @returns {H5P.ContentType[]} H5P instances.
    */
   getInstances() {
     return this.contents.map(content => content.instance);
@@ -381,7 +402,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get instances' semantics.
-   * @return {object[]} H5P instance semantics.
+   *
+   * @returns {object[]} H5P instance semantics.
    */
   getInstancesSemantics() {
     return this.params.contents.map(content => content.content);
@@ -389,7 +411,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get task title.
-   * @return {string} Title.
+   *
+   * @returns {string} Title.
    */
   getTitle() {
     // H5P Core function: createTitle
@@ -400,7 +423,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get description.
-   * @return {string} Description.
+   *
+   * @returns {string} Description.
    */
   getDescription() {
     return PortfolioChapter.DEFAULT_DESCRIPTION;
@@ -408,7 +432,8 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
   /**
    * Get current state.
-   * @return {object} Current state.
+   *
+   * @returns {object} Current state.
    */
   getCurrentState() {
     return {
