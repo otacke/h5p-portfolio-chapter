@@ -1,6 +1,6 @@
 {
   "name": "h5p-portfolio-chapter",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Chapter content for RUB Portfolio",
   "private": true,
   "scripts": {
@@ -26,7 +26,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "eslint": "^8.21.0",
-    "eslint-plugin-jsdoc": "^39.3.6",    
+    "eslint-plugin-jsdoc": "^39.3.6",
     "mini-css-extract-plugin": "^2.6.1",
     "regenerator-runtime": "^0.13.9",
     "resolve-url-loader": "^5.0.0",
