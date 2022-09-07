@@ -131,6 +131,15 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   }
 
   /**
+   * Get Placeholder DOMs.
+   *
+   * @returns {HTMLElement[]} Placeholder DOMs.
+   */
+  getPlaceholderDOMs() {
+    return this.contents.map(content => content.dom);
+  }
+
+  /**
    * Build content wrapper.
    *
    * @returns {HTMLElement} Content wrapper.
