@@ -40,7 +40,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
 
     // Some other content types might use this information
     this.isTask = this.contents.some(
-      content => this.isInstanceTask(content.instance)
+      (content) => this.isInstanceTask(content.instance)
     );
 
     // Expect parent to set activity started when parent is shown
@@ -98,7 +98,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
         this.bubbleUp(instance, 'resize', this);
 
         if (this.isInstanceTask(instance)) {
-          instance.on('xAPI', event => {
+          instance.on('xAPI', (event) => {
             this.trackScoring(event, index);
           });
         }
@@ -123,7 +123,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     const contents = document.createElement('div');
     contents.classList.add('h5p-portfolio-chapter-contents');
 
-    this.contents.forEach(content => {
+    this.contents.forEach((content) => {
       contents.appendChild(content.dom);
     });
 
@@ -136,7 +136,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @returns {HTMLElement[]} Placeholder DOMs.
    */
   getPlaceholderDOMs() {
-    return this.contents.map(content => content.dom);
+    return this.contents.map((content) => content.dom);
   }
 
   /**
@@ -164,7 +164,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
         return; // Prevent send event back down.
       }
 
-      targets.forEach(target => {
+      targets.forEach((target) => {
         target.trigger(eventName, event);
       });
     });
@@ -207,7 +207,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     }
 
     this.contents[index].isDone = true;
-    if (this.contents.every(content => content.isDone)) {
+    if (this.contents.every((content) => content.isDone)) {
       this.handleAllContentsDone();
     }
   }
@@ -253,7 +253,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-1}
    */
   getAnswerGiven() {
-    return this.contents.some(content => {
+    return this.contents.some((content) => {
       return (
         typeof content?.instance?.getAnswerGiven === 'function' &&
         content.instance.getAnswerGiven()
@@ -295,7 +295,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-4}
    */
   showSolutions() {
-    this.contents.forEach(content => {
+    this.contents.forEach((content) => {
       if (typeof content?.instance?.showSolutions === 'function') {
         content.instance.showSolutions();
       }
@@ -310,7 +310,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
    */
   resetTask() {
-    this.contents.forEach(content => {
+    this.contents.forEach((content) => {
       if (typeof content?.instance?.resetTask === 'function') {
         content.instance.resetTask();
       }
@@ -340,7 +340,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     return {
       statement: xAPIEvent.data.statement,
       children: this.getXAPIDataFromChildren(
-        this.contents.map(content => content.instance)
+        this.contents.map((content) => content.instance)
       )
     };
   }
@@ -353,12 +353,12 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    */
   getXAPIDataFromChildren(children) {
     return children
-      .map(child => {
+      .map((child) => {
         if (typeof child.getXAPIData === 'function') {
           return child.getXAPIData();
         }
       })
-      .filter(data => !!data);
+      .filter((data) => !!data);
   }
 
   /**
@@ -406,7 +406,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @returns {H5P.ContentType[]} H5P instances.
    */
   getInstances() {
-    return this.contents.map(content => content.instance);
+    return this.contents.map((content) => content.instance);
   }
 
   /**
@@ -415,7 +415,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    * @returns {object[]} H5P instance semantics.
    */
   getInstancesSemantics() {
-    return this.params.contents.map(content => content.content);
+    return this.params.contents.map((content) => content.content);
   }
 
   /**
@@ -446,7 +446,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    */
   getCurrentState() {
     return {
-      children: this.contents.map(content => {
+      children: this.contents.map((content) => {
         return (typeof content?.instance?.getCurrentState === 'function') ?
           content.instance.getCurrentState() :
           {};
