@@ -23,7 +23,7 @@
               "type": "library",
               "label": "Content",
               "options": [
-                "H5P.PortfolioPlaceholder 0.5"
+                "H5P.PortfolioPlaceholder 0.6"
               ]
             },
             {
