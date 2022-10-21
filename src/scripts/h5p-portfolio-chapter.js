@@ -330,6 +330,9 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   getXAPIData() {
     var xAPIEvent = this.createXAPIEvent('answered');
 
+    // Not a valid xAPI value (!), but H5P uses it for reporting
+    xAPIEvent.data.statement.definition.interactionType = 'compound';
+
     xAPIEvent.setScoredResult(this.getScore(),
       this.getMaxScore(),
       this,
@@ -388,14 +391,16 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     definition.name[this.languageTag] = this.getTitle();
     // Fallback for h5p-php-reporting, expects en-US
     definition.name['en-US'] = definition.name[this.languageTag];
+
     definition.description = {};
     definition.description[this.languageTag] = Util.stripHTML(
       this.getDescription()
     );
     // Fallback for h5p-php-reporting, expects en-US
     definition.description['en-US'] = definition.description[this.languageTag];
+
     definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
-    definition.interactionType = 'compound';
+    definition.interactionType = 'other';
 
     return definition;
   }
