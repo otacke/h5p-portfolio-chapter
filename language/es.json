@@ -1,0 +1,27 @@
+{
+  "semantics": [
+    {
+      "label": "Capítulo",
+      "fields": [
+        {
+          "label": "Marcadores de posición",
+          "entity": "marcador de posición",
+          "field": {
+            "label": "Contenido",
+            "fields": [
+              {
+                "label": "Contenido"
+              },
+              {
+                "label": "Maniquí"
+              }
+            ]
+          }
+        },
+        {
+          "label": "Maniquí"
+        }
+      ]
+    }
+  ]
+}
