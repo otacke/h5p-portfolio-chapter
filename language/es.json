@@ -4,8 +4,8 @@
       "label": "Capítulo",
       "fields": [
         {
-          "label": "Marcadores de posición",
-          "entity": "marcador de posición",
+          "label": "Remplazables",
+          "entity": "remplazable",
           "field": {
             "label": "Contenido",
             "fields": [
