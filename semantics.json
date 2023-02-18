@@ -12,7 +12,6 @@
         "type": "list",
         "label": "Placeholders",
         "entity": "placeholder",
-        "min": 1,
         "field": {
           "name": "content",
           "type": "group",
