@@ -1,6 +1,6 @@
 {
   "name": "h5p-portfolio-chapter",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "Chapter content for RUB Portfolio",
   "private": true,
   "scripts": {
