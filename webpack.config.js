@@ -69,5 +69,5 @@ module.exports = {
   stats: {
     colors: true
   },
-  devtool: (mode !== 'production') ? undefined : 'eval-cheap-module-source-map'
+  devtool: (mode === 'production') ? undefined : 'eval-cheap-module-source-map'
 };
