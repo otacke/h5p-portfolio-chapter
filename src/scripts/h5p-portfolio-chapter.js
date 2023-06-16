@@ -187,7 +187,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   /**
    * Track scoring of contents.
    * @param {Event} event Event.
-   * @param {number} [index=-1] Index.
+   * @param {number} [index] Index.
    */
   trackScoring(event, index = -1) {
     if (!event || event.getScore() === null) {
