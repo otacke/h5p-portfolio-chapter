@@ -1,4 +1,4 @@
-import Util from '@services/h5p-portfolio-chapter-util';
+import Util from '@services/h5p-portfolio-chapter-util.js';
 import '@styles/h5p-portfolio-chapter.scss';
 
 export default class PortfolioChapter extends H5P.EventDispatcher {
