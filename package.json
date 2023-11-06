@@ -31,19 +31,11 @@
     "mini-css-extract-plugin": "^2.7.6",
     "regenerator-runtime": "^0.14.0",
     "resolve-url-loader": "^5.0.0",
-<<<<<<< HEAD
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "stylelint": "^15.11.0",
     "stylelint-config-recommended": "^13.0.0",
     "stylelint-config-recommended-scss": "^13.1.0",
-=======
-    "sass": "^1.69.3",
-    "sass-loader": "^13.3.2",
-    "stylelint": "^15.11.0",
-    "stylelint-config-recommended": "^13.0.0",
-    "stylelint-config-recommended-scss": "^13.0.0",
->>>>>>> b6720ae82f7815d160e837c08a5d2a80d554a5f5
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
