@@ -8,20 +8,22 @@ class Util {
     // Iterate over all arguments and merge them into the first argument.
     for (let i = 1; i < arguments.length; i++) {
       for (let key in arguments[i]) {
-        if (Object.prototype.hasOwnProperty.call(arguments[i], key)) {
-          // If both the first and i-th argument have a property with the
-          // same key and both values are objects, merge the two objects.
-          if (
-            typeof arguments[0][key] === 'object' &&
-            typeof arguments[i][key] === 'object'
-          ) {
-            this.extend(arguments[0][key], arguments[i][key]);
-          }
-          // Otherwise, just assign the i-th argument's value to the first
-          // argument's value.
-          else {
-            arguments[0][key] = arguments[i][key];
-          }
+        if (!Object.prototype.hasOwnProperty.call(arguments[i], key)) {
+          continue;
+        }
+
+        // If both the first and i-th argument have a property with the
+        // same key and both values are objects, merge the two objects.
+        if (
+          typeof arguments[0][key] === 'object' &&
+          typeof arguments[i][key] === 'object'
+        ) {
+          this.extend(arguments[0][key], arguments[i][key]);
+        }
+        // Otherwise, just assign the i-th argument's value to the first
+        // argument's value.
+        else {
+          arguments[0][key] = arguments[i][key];
         }
       }
     }
