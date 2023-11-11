@@ -1,4 +1,6 @@
-import Util from '@services/h5p-portfolio-chapter-util.js';
+import Util from '@services/util.js';
+import QuestionTypeContract from '@mixins/question-type-contract.js';
+import XAPI from '@mixins/xapi.js';
 import '@styles/h5p-portfolio-chapter.scss';
 
 export default class PortfolioChapter extends H5P.EventDispatcher {
@@ -10,6 +12,10 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    */
   constructor(params, contentId, extras = {}) {
     super();
+
+    Util.addMixins(
+      PortfolioChapter, [QuestionTypeContract, XAPI]
+    );
 
     // Sanitize parameters
     this.params = Util.extend({
@@ -28,6 +34,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     const defaultLanguage = extras?.metadata?.defaultLanguage || 'en';
     this.languageTag = Util.formatLanguageCode(defaultLanguage);
 
+    // Ensure contents are filled.
     while (this.params.contents.length < 1) {
       this.params.contents.push({});
     }
@@ -76,31 +83,14 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     const contents = (params.contents || []).map((content, index) => {
       const dom = this.buildContentWrapper();
 
+      // Get previous state, if it exists.
       const previousState = params?.previousStates.length > index ?
         params.previousStates[index] :
         {};
 
-      const instance = (!content.content) ?
-        null :
-        H5P.newRunnable(
-          content.content,
-          this.contentId,
-          H5P.jQuery(dom),
-          false,
-          { previousState: previousState }
-        );
-
-      // Resize instance to fit inside parent and vice versa
-      if (instance) {
-        this.bubbleDown(this, 'resize', [instance]);
-        this.bubbleUp(instance, 'resize', this);
-
-        if (this.isInstanceTask(instance)) {
-          instance.on('xAPI', (event) => {
-            this.trackScoring(event, index);
-          });
-        }
-      }
+      const instance = this.createChildInstance(
+        content, dom, index, previousState
+      );
 
       return {
         dom: dom,
@@ -110,6 +100,49 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     });
 
     return contents;
+  }
+
+  /**
+   * Create new instance of content.
+   * @param {object} content Content parameters.
+   * @param {H5P.jQuery} dom DOM element to attach content to.
+   * @param {number} index Index of content.
+   * @param {object} [previousState] Previous state
+   * @returns {H5P.ContentType|null} H5P content instance.
+   */
+  createChildInstance(content = {}, dom, index, previousState = {}) {
+    // Create new instance, if content exists.
+    const instance = (content.content) ?
+      H5P.newRunnable(
+        content.content,
+        this.contentId,
+        H5P.jQuery(dom),
+        false,
+        { previousState: previousState }
+      ) :
+      null;
+
+    // Resize instance to fit inside parent and vice versa
+    if (instance) {
+      this.initializeResizeBubbling(instance);
+
+      if (this.isInstanceTask(instance)) {
+        instance.on('xAPI', (event) => {
+          this.trackScoring(event, index);
+        });
+      }
+    }
+
+    return instance;
+  }
+
+  /**
+   * Initialize resize bubbling between parent and child.
+   * @param {H5P.ContentType} instance H5P content instance
+   */
+  initializeResizeBubbling(instance) {
+    this.bubbleDown(this, 'resize', [instance]);
+    this.bubbleUp(instance, 'resize', this);
   }
 
   /**
@@ -238,188 +271,19 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
   }
 
   /**
-   * Check if result has been submitted or input has been given.
-   * @returns {boolean} True, if answer was given.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-1}
-   */
-  getAnswerGiven() {
-    return this.contents.some((content) => {
-      return (
-        typeof content?.instance?.getAnswerGiven === 'function' &&
-        content.instance.getAnswerGiven()
-      );
-    });
-  }
-
-  /**
-   * Get score.
-   * @returns {number} Score.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-2}
-   */
-  getScore() {
-    return this.contents.reduce((sum, content) => {
-      return sum + (typeof content.instance.getScore === 'function' ?
-        content.instance.getScore() :
-        0);
-    }, 0);
-  }
-
-  /**
-   * Get maximum possible score.
-   * @returns {number} Maximum possible score.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-3}
-   */
-  getMaxScore() {
-    return this.contents.reduce((sum, content) => {
-      return sum + (typeof content.instance.getMaxScore === 'function' ?
-        content.instance.getMaxScore() :
-        0);
-    }, 0);
-  }
-
-  /**
-   * Show solutions.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-4}
-   */
-  showSolutions() {
-    this.contents.forEach((content) => {
-      if (typeof content?.instance?.showSolutions === 'function') {
-        content.instance.showSolutions();
-      }
-    });
-
-    this.trigger('resize');
-  }
-
-  /**
-   * Reset task.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
-   */
-  resetTask() {
-    this.contents.forEach((content) => {
-      if (typeof content?.instance?.resetTask === 'function') {
-        content.instance.resetTask();
-      }
-
-      content.isDone = !content.instance || !this.isInstanceTask(content.instance);
-    });
-
-    this.trigger('resize');
-  }
-
-  /**
-   * Get xAPI data.
-   * @returns {object} XAPI statement.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
-   */
-  getXAPIData() {
-    var xAPIEvent = this.createXAPIEvent('answered');
-
-    // Not a valid xAPI value (!), but H5P uses it for reporting
-    xAPIEvent.data.statement.definition.interactionType = 'compound';
-
-    xAPIEvent.setScoredResult(this.getScore(),
-      this.getMaxScore(),
-      this,
-      true,
-      this.getScore() === this.getMaxScore()
-    );
-
-    return {
-      statement: xAPIEvent.data.statement,
-      children: this.getXAPIDataFromChildren(
-        this.contents.map((content) => content.instance)
-      )
-    };
-  }
-
-  /**
-   * Get xAPI data from sub content types.
-   * @param {H5P.ContentType[]} children instances.
-   * @returns {object[]} XAPI data objects used to build report.
-   */
-  getXAPIDataFromChildren(children) {
-    return children
-      .map((child) => {
-        if (typeof child.getXAPIData === 'function') {
-          return child.getXAPIData();
-        }
-      })
-      .filter((data) => !!data);
-  }
-
-  /**
-   * Create an xAPI event.
-   * @param {string} verb Short id of the verb we want to trigger.
-   * @returns {H5P.XAPIEvent} Event template.
-   */
-  createXAPIEvent(verb) {
-    const xAPIEvent = this.createXAPIEventTemplate(verb);
-    Util.extend(
-      xAPIEvent.getVerifiedStatementValue(['object', 'definition']),
-      this.getxAPIDefinition());
-
-    return xAPIEvent;
-  }
-
-  /**
-   * Get the xAPI definition for the xAPI object.
-   * @returns {object} XAPI definition.
-   */
-  getxAPIDefinition() {
-    const definition = {};
-
-    definition.name = {};
-    definition.name[this.languageTag] = this.getTitle();
-    // Fallback for h5p-php-reporting, expects en-US
-    definition.name['en-US'] = definition.name[this.languageTag];
-
-    definition.description = {};
-    definition.description[this.languageTag] = Util.stripHTML(
-      this.getDescription()
-    );
-    // Fallback for h5p-php-reporting, expects en-US
-    definition.description['en-US'] = definition.description[this.languageTag];
-
-    definition.type = 'http://adlnet.gov/expapi/activities/cmi.interaction';
-    definition.interactionType = 'other';
-
-    return definition;
-  }
-
-  /**
    * Get instances.
-   * @returns {H5P.ContentType[]} H5P instances.
+   * @returns {H5P.ContentType[]} H5P instances. Interface for parent.
    */
   getInstances() {
     return this.contents.map((content) => content.instance);
   }
 
   /**
-   * Get instances' semantics.
+   * Get instances' semantics. Interface for parent.
    * @returns {object[]} H5P instance semantics.
    */
   getInstancesSemantics() {
     return this.params.contents.map((content) => content.content);
-  }
-
-  /**
-   * Get task title.
-   * @returns {string} Title.
-   */
-  getTitle() {
-    // H5P Core function: createTitle
-    return H5P.createTitle(
-      this.extras?.metadata?.title || PortfolioChapter.DEFAULT_DESCRIPTION
-    );
-  }
-
-  /**
-   * Get description.
-   * @returns {string} Description.
-   */
-  getDescription() {
-    return PortfolioChapter.DEFAULT_DESCRIPTION;
   }
 
   /**
@@ -436,6 +300,3 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     };
   }
 }
-
-/** @constant {string} */
-PortfolioChapter.DEFAULT_DESCRIPTION = 'Portfolio chapter';
