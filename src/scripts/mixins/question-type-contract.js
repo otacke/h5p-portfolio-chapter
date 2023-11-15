@@ -71,4 +71,46 @@ export default class QuestionTypeContract {
 
     this.trigger('resize');
   }
+
+  /**
+   * Get xAPI data.
+   * @returns {object} XAPI statement.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
+   */
+  getXAPIData() {
+    var xAPIEvent = this.createXAPIEvent('answered');
+
+    // Not a valid xAPI value (!), but H5P uses it for reporting
+    xAPIEvent.data.statement.definition.interactionType = 'compound';
+
+    // Set score
+    xAPIEvent.setScoredResult(this.getScore(),
+      this.getMaxScore(),
+      this,
+      true,
+      this.getScore() === this.getMaxScore()
+    );
+
+    return {
+      statement: xAPIEvent.data.statement,
+      children: this.getXAPIDataFromChildren(
+        this.contents.map((content) => content.instance)
+      )
+    };
+  }
+
+  /**
+   * Get current state.
+   * @returns {object} Current state.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-7}
+   */
+  getCurrentState() {
+    return {
+      children: this.contents.map((content) => {
+        return (typeof content?.instance?.getCurrentState === 'function') ?
+          content.instance.getCurrentState() :
+          {};
+      })
+    };
+  }
 }

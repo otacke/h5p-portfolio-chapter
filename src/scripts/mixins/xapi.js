@@ -5,33 +5,6 @@ import Util from '@services/util.js';
  */
 export default class XAPI {
   /**
-   * Get xAPI data.
-   * @returns {object} XAPI statement.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-6}
-   */
-  getXAPIData() {
-    var xAPIEvent = this.createXAPIEvent('answered');
-
-    // Not a valid xAPI value (!), but H5P uses it for reporting
-    xAPIEvent.data.statement.definition.interactionType = 'compound';
-
-    // Set score
-    xAPIEvent.setScoredResult(this.getScore(),
-      this.getMaxScore(),
-      this,
-      true,
-      this.getScore() === this.getMaxScore()
-    );
-
-    return {
-      statement: xAPIEvent.data.statement,
-      children: this.getXAPIDataFromChildren(
-        this.contents.map((content) => content.instance)
-      )
-    };
-  }
-
-  /**
    * Get xAPI data from sub content types.
    * @param {H5P.ContentType[]} children instances.
    * @returns {object[]} XAPI data objects used to build report.

@@ -270,8 +270,10 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     return false;
   }
 
+  // TODO: Those could be put in a mixin
+
   /**
-   * Get instances.
+   * Get instances. Interface for parent.
    * @returns {H5P.ContentType[]} H5P instances. Interface for parent.
    */
   getInstances() {
@@ -284,19 +286,5 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
    */
   getInstancesSemantics() {
     return this.params.contents.map((content) => content.content);
-  }
-
-  /**
-   * Get current state.
-   * @returns {object} Current state.
-   */
-  getCurrentState() {
-    return {
-      children: this.contents.map((content) => {
-        return (typeof content?.instance?.getCurrentState === 'function') ?
-          content.instance.getCurrentState() :
-          {};
-      })
-    };
   }
 }
