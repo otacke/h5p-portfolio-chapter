@@ -1,4 +1,5 @@
 import Util from '@services/util.js';
+import API from '@mixins/api.js';
 import QuestionTypeContract from '@mixins/question-type-contract.js';
 import XAPI from '@mixins/xapi.js';
 import '@styles/h5p-portfolio-chapter.scss';
@@ -14,7 +15,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     super();
 
     Util.addMixins(
-      PortfolioChapter, [QuestionTypeContract, XAPI]
+      PortfolioChapter, [API, QuestionTypeContract, XAPI]
     );
 
     // Sanitize parameters
@@ -268,23 +269,5 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     }
 
     return false;
-  }
-
-  // TODO: Those could be put in a mixin
-
-  /**
-   * Get instances. Interface for parent.
-   * @returns {H5P.ContentType[]} H5P instances. Interface for parent.
-   */
-  getInstances() {
-    return this.contents.map((content) => content.instance);
-  }
-
-  /**
-   * Get instances' semantics. Interface for parent.
-   * @returns {object[]} H5P instance semantics.
-   */
-  getInstancesSemantics() {
-    return this.params.contents.map((content) => content.content);
   }
 }
