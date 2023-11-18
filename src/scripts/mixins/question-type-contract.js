@@ -81,7 +81,7 @@ export default class QuestionTypeContract {
     var xAPIEvent = this.createXAPIEvent('answered');
 
     // Not a valid xAPI value (!), but H5P uses it for reporting
-    xAPIEvent.data.statement.definition.interactionType = 'compound';
+    xAPIEvent.data.statement.object.definition.interactionType = 'compound';
 
     // Set score
     xAPIEvent.setScoredResult(this.getScore(),
