@@ -2,33 +2,26 @@
 class Util {
   /**
    * Extend an array just like JQuery's extend.
+   * @param {...object} var_args Objects to be merged.
    * @returns {object} Merged objects.
    */
-  static extend() {
-    // Iterate over all arguments and merge them into the first argument.
-    for (let i = 1; i < arguments.length; i++) {
-      for (let key in arguments[i]) {
-        if (!Object.prototype.hasOwnProperty.call(arguments[i], key)) {
-          continue;
-        }
-
-        // If both the first and i-th argument have a property with the
-        // same key and both values are objects, merge the two objects.
-        if (
-          typeof arguments[0][key] === 'object' &&
-          typeof arguments[i][key] === 'object'
-        ) {
-          this.extend(arguments[0][key], arguments[i][key]);
-        }
-        // Otherwise, just assign the i-th argument's value to the first
-        // argument's value.
-        else {
-          arguments[0][key] = arguments[i][key];
+  static extend(var_args) {
+    for (let i = 1; i < var_args.length; i++) {
+      for (let key in var_args[i]) {
+        if (Object.prototype.hasOwnProperty.call(var_args[i], key)) {
+          if (
+            typeof var_args[0][key] === 'object' &&
+            typeof var_args[i][key] === 'object'
+          ) {
+            this.extend(var_args[0][key], var_args[i][key]);
+          }
+          else {
+            var_args[0][key] = var_args[i][key];
+          }
         }
       }
     }
-
-    return arguments[0];
+    return var_args[0];
   }
 
   /**
