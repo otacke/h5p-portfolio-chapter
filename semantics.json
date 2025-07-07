@@ -22,7 +22,7 @@
               "type": "library",
               "label": "Content",
               "options": [
-                "H5P.PortfolioPlaceholder 0.10"
+                "H5P.PortfolioPlaceholder 0.11"
               ],
               "portfolioPlaceholder": {
                 "colorSelector": true
