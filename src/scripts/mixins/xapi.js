@@ -47,7 +47,7 @@ export default class XAPI {
 
     definition.description = {};
     definition.description[this.languageTag] = Util.stripHTML(
-      this.getDescription()
+      this.getDescription(),
     );
     // Fallback for h5p-php-reporting, expects en-US
     definition.description['en-US'] = definition.description[this.languageTag];
@@ -65,7 +65,7 @@ export default class XAPI {
   getTitle() {
     // H5P Core function: createTitle
     return H5P.createTitle(
-      this.extras?.metadata?.title || XAPI.DEFAULT_DESCRIPTION
+      this.extras?.metadata?.title || XAPI.DEFAULT_DESCRIPTION,
     );
   }
 

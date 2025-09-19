@@ -88,14 +88,14 @@ export default class QuestionTypeContract {
       this.getMaxScore(),
       this,
       true,
-      this.getScore() === this.getMaxScore()
+      this.getScore() === this.getMaxScore(),
     );
 
     return {
       statement: xAPIEvent.data.statement,
       children: this.getXAPIDataFromChildren(
-        this.contents.map((content) => content.instance)
-      )
+        this.contents.map((content) => content.instance),
+      ),
     };
   }
 
@@ -110,7 +110,7 @@ export default class QuestionTypeContract {
         return (typeof content?.instance?.getCurrentState === 'function') ?
           content.instance.getCurrentState() :
           {};
-      })
+      }),
     };
   }
 }

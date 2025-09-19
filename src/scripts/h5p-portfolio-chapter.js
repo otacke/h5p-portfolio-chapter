@@ -15,14 +15,14 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     super();
 
     Util.addMixins(
-      PortfolioChapter, [API, QuestionTypeContract, XAPI]
+      PortfolioChapter, [API, QuestionTypeContract, XAPI],
     );
 
     // Sanitize parameters
     this.params = Util.extend({
       chapter: {
-        contents: []
-      }
+        contents: [],
+      },
     }, params);
 
     this.params = this.params.chapter;
@@ -43,12 +43,12 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
     // Build contents
     this.contents = this.buildContents({
       contents: this.params.contents,
-      previousStates: this.previousState.children || []
+      previousStates: this.previousState.children || [],
     });
 
     // Some other content types might use this information
     this.isTask = this.contents.some(
-      (content) => this.isInstanceTask(content.instance)
+      (content) => this.isInstanceTask(content.instance),
     );
 
     // Expect parent to set activity started when parent is shown
@@ -90,13 +90,13 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
         {};
 
       const instance = this.createChildInstance(
-        content, dom, index, previousState
+        content, dom, index, previousState,
       );
 
       return {
         dom: dom,
         instance: instance,
-        isDone: !instance || !this.isInstanceTask(instance)
+        isDone: !instance || !this.isInstanceTask(instance),
       };
     });
 
@@ -119,7 +119,7 @@ export default class PortfolioChapter extends H5P.EventDispatcher {
         this.contentId,
         H5P.jQuery(dom),
         false,
-        { previousState: previousState }
+        { previousState: previousState },
       ) :
       null;
 
